@@ -11,6 +11,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { todosCollection, db } from "../includes/firebase";
 import Icon from "react-native-ionicons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 export interface Todo {
   done: boolean;
@@ -31,15 +32,25 @@ const renderTodo = ({ item }: any) => {
     <View style={styles.todoContainer}>
       <TouchableOpacity onPress={toggleDone} style={styles.todo}>
         {item.done && (
-          <Icon name="md-checkmark-circle" size={32} color="green" />
+          <FontAwesomeIcon icon="fa-circle" size={20} color={"green"} />
         )}
-        {!item.done && <Entypo name="circle" size={32} color="black" />}
+        {!item.done && (
+          <FontAwesomeIcon icon="fa-circle" size={20} color={"black"} />
+        )}
         <Text style={styles.todoText}>{item.title}</Text>
       </TouchableOpacity>
-      <Icon
+
+      {/* <Icon
         name="trash-bin-outline"
         size={24}
         color="red"
+        onPress={deleteItem}
+      /> */}
+
+      <FontAwesomeIcon
+        icon="fa-trash"
+        size={24}
+        color={"red"}
         onPress={deleteItem}
       />
     </View>
