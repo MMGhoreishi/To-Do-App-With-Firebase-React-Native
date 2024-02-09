@@ -1,74 +1,23 @@
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Button,
-  SafeAreaView,
-  FlatList,
-  TouchableOpacity,
-  Text,
-} from "react-native";
+import { View, StyleSheet, TextInput, Button, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
-import { todosCollection, db } from "../includes/firebase";
-import Icon from "react-native-ionicons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-
-export interface Todo {
-  done: boolean;
-  id: string;
-  title: string;
-}
-
-const renderTodo = ({ item }: any) => {
-  const toggleDone = async () => {
-    await todosCollection.doc(item.id).update({ done: !item.done });
-  };
-
-  const deleteItem = async () => {
-    await todosCollection.doc(item.id).delete();
-  };
-
-  return (
-    <View style={styles.todoContainer}>
-      <TouchableOpacity onPress={toggleDone} style={styles.todo}>
-        {item.done && (
-          <FontAwesomeIcon icon="fa-circle" size={20} color={"green"} />
-        )}
-        {!item.done && (
-          <FontAwesomeIcon icon="fa-circle" size={20} color={"black"} />
-        )}
-        <Text style={styles.todoText}>{item.title}</Text>
-      </TouchableOpacity>
-
-      {/* <Icon
-        name="trash-bin-outline"
-        size={24}
-        color="red"
-        onPress={deleteItem}
-      /> */}
-
-      <FontAwesomeIcon
-        icon="fa-trash"
-        size={24}
-        color={"red"}
-        onPress={deleteItem}
-      />
-    </View>
-  );
-};
+import { todosCollection } from "../includes/firebase";
+import RenderTodo from "../components/RenderTodo";
+import { ITodo } from "../models/ITodo";
+import styles from "../styles";
 
 const List = () => {
-  const [todos, setTodos] = useState<any[]>([]);
+  const [todos, setTodos] = useState<ITodo[]>([]);
   const [todo, setTodo] = useState("");
 
   useEffect(() => {
     const subscriber = todosCollection.onSnapshot({
       next: (snapshot) => {
-        const todos: any[] = [];
+        const todos: ITodo[] = [];
         snapshot.docs.forEach((doc) => {
           todos.push({
             id: doc.id,
-            ...doc.data(),
+            done: doc.data().done,
+            title: doc.data().done.title,
           });
         });
 
@@ -81,8 +30,6 @@ const List = () => {
   }, []);
 
   const addTodo = async () => {
-    console.log("dddddd");
-
     try {
       const docRef = await todosCollection.add({
         title: todo,
@@ -111,7 +58,7 @@ const List = () => {
         <View>
           <FlatList
             data={todos}
-            renderItem={renderTodo}
+            renderItem={RenderTodo}
             keyExtractor={(todo) => todo.id}
             // removeClippedSubviews={true}
           />
@@ -120,40 +67,5 @@ const List = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 20,
-  },
-  form: {
-    marginVertical: 20,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 4,
-    padding: 10,
-    backgroundColor: "#fff",
-  },
-  todo: {
-    flexDirection: "row",
-    flex: 1,
-    alignItems: "center",
-  },
-  todoText: {
-    flex: 1,
-    paddingHorizontal: 4,
-  },
-  todoContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 10,
-    marginVertical: 4,
-  },
-});
 
 export default List;
