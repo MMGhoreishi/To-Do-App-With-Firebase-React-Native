@@ -1,9 +1,45 @@
-import { View, StyleSheet, TextInput, Button, FlatList } from "react-native";
+import {
+  View,
+  TextInput,
+  Button,
+  FlatList,
+  Alert,
+  TouchableOpacity,
+  Text,
+  Pressable,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { todosCollection } from "../includes/firebase";
-import RenderTodo from "../components/RenderTodo";
 import { ITodo } from "../models/ITodo";
 import styles from "../styles";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { deleteItem, toggleDone, addTodo } from "../includes/helper";
+
+const renderTodo = ({ item }: any) => {
+  console.log("renderTodo222>>>");
+  console.log(item);
+
+  return (
+    <View style={styles.todoContainer}>
+      <TouchableOpacity
+        onPress={() => toggleDone(item.id, item.done)}
+        style={styles.todo}
+      >
+        {item.done && (
+          <FontAwesomeIcon icon="fa-circle" size={20} color={"green"} />
+        )}
+        {!item.done && (
+          <FontAwesomeIcon icon="fa-circle" size={20} color={"black"} />
+        )}
+        <Text style={styles.todoText}>{item.title}</Text>
+      </TouchableOpacity>
+
+      <Pressable onPress={() => deleteItem(item.id)}>
+        <FontAwesomeIcon icon="fa-trash" size={24} color={"red"} />
+      </Pressable>
+    </View>
+  );
+};
 
 const List = () => {
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -14,10 +50,12 @@ const List = () => {
       next: (snapshot) => {
         const todos: ITodo[] = [];
         snapshot.docs.forEach((doc) => {
+          const item = { ...doc.data() };
+
           todos.push({
             id: doc.id,
-            done: doc.data().done,
-            title: doc.data().done.title,
+            title: item.title,
+            done: item.done,
           });
         });
 
@@ -29,19 +67,6 @@ const List = () => {
     return () => subscriber();
   }, []);
 
-  const addTodo = async () => {
-    try {
-      const docRef = await todosCollection.add({
-        title: todo,
-        done: false,
-      });
-      setTodo("");
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.form}>
@@ -51,16 +76,19 @@ const List = () => {
           onChangeText={(text) => setTodo(text)}
           value={todo}
         />
-        <Button onPress={addTodo} title="Add Todo" disabled={todo === ""} />
+        <Button
+          onPress={() => addTodo(todo, setTodo)}
+          title="Add Todo"
+          disabled={todo === ""}
+        />
       </View>
 
       {todos.length > 0 && (
         <View>
           <FlatList
             data={todos}
-            renderItem={RenderTodo}
+            renderItem={renderTodo}
             keyExtractor={(todo) => todo.id}
-            // removeClippedSubviews={true}
           />
         </View>
       )}
