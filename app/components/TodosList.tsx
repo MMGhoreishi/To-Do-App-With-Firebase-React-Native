@@ -14,7 +14,6 @@ const TodosList = () => {
   useEffect(() => {
     const subscriber = todosCollection.onSnapshot({
       next: (snapshot) => {
-        console.log("ssubscribe---");
         const todos: ITodo[] = [];
         snapshot.docs.forEach((doc) => {
           const item = { ...doc.data() };

@@ -2,16 +2,12 @@ import { Alert } from "react-native";
 import { todosCollection } from "../includes/firebase";
 
 export const addTodo = async (todo: any, setTodo: any) => {
-  console.log("todo-value-heloper>>>");
-  console.log(todo);
-
   try {
     const docRef = await todosCollection.add({
       title: todo,
       done: false,
     });
     setTodo("");
-    console.log("Document written with ID: ", docRef.id);
   } catch (e) {
     console.error("Error adding document: ", e);
   }
