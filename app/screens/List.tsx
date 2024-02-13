@@ -13,12 +13,11 @@ import { todosCollection } from "../includes/firebase";
 import { ITodo } from "../models/ITodo";
 import styles from "../styles";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { deleteItem, toggleDone, addTodo } from "../includes/helper";
+import { addTodo, deleteItem, toggleDone } from "../includes/helper";
+import { useSelector, useDispatch } from "react-redux";
+import { setTodoList } from "../todoSlice";
 
 const renderTodo = ({ item }: any) => {
-  console.log("renderTodo222>>>");
-  console.log(item);
-
   return (
     <View style={styles.todoContainer}>
       <TouchableOpacity
@@ -42,16 +41,17 @@ const renderTodo = ({ item }: any) => {
 };
 
 const List = () => {
-  const [todos, setTodos] = useState<ITodo[]>([]);
   const [todo, setTodo] = useState("");
+  const { todos } = useSelector((state: any) => state.todos);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const subscriber = todosCollection.onSnapshot({
       next: (snapshot) => {
+        console.log("ssubscribe---");
         const todos: ITodo[] = [];
         snapshot.docs.forEach((doc) => {
           const item = { ...doc.data() };
-
           todos.push({
             id: doc.id,
             title: item.title,
@@ -59,10 +59,9 @@ const List = () => {
           });
         });
 
-        setTodos(todos);
+        dispatch(setTodoList(todos));
       },
     });
-
     // // Unsubscribe from events when no longer in use
     return () => subscriber();
   }, []);
@@ -82,16 +81,17 @@ const List = () => {
           disabled={todo === ""}
         />
       </View>
-
-      {todos.length > 0 && (
-        <View>
-          <FlatList
-            data={todos}
-            renderItem={renderTodo}
-            keyExtractor={(todo) => todo.id}
-          />
-        </View>
-      )}
+      {todos
+        ? todos.length > 0 && (
+            <View>
+              <FlatList
+                data={todos}
+                renderItem={renderTodo}
+                keyExtractor={(todo) => todo.id}
+              />
+            </View>
+          )
+        : ""}
     </View>
   );
 };
