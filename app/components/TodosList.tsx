@@ -2,7 +2,7 @@ import { Text } from "react-native";
 import styles from "../styles";
 import { useSelector, useDispatch } from "react-redux";
 import { setTodoList } from "../todoSlice";
-import ITodo from "../models/ITodo";
+import { ITodo } from "../models";
 import { todosCollection } from "../includes/firebase";
 import { useEffect } from "react";
 import { ItemList } from "../components";
