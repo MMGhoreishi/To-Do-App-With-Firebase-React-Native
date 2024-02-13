@@ -2,6 +2,9 @@ import { Alert } from "react-native";
 import { todosCollection } from "../includes/firebase";
 
 export const addTodo = async (todo: any, setTodo: any) => {
+  console.log("todo-value-heloper>>>");
+  console.log(todo);
+
   try {
     const docRef = await todosCollection.add({
       title: todo,

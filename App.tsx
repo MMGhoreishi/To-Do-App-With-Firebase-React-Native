@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import List from "./app/screens/List";
+import TodoApp from "./app/screens/TodoApp";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fab } from "@fortawesome/free-brands-svg-icons";
@@ -19,7 +19,7 @@ const App = () => {
       <Provider store={store}>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="My Todos" component={List} />
+            <Stack.Screen name="My Todos" component={TodoApp} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

@@ -17,6 +17,18 @@ export default StyleSheet.create({
     padding: 10,
     backgroundColor: "#fff",
   },
+  emptyList: {
+    backgroundColor: "#f8d7da",
+    color: "#721c24",
+    textAlign: "center",
+    fontWeight: "bold",
+    padding: 10,
+    borderRadius: 5,
+    borderColor: "#f5c6cb",
+    borderWidth: 2,
+    borderStyle: "solid",
+    textTransform: "capitalize",
+  },
   todo: {
     flexDirection: "row",
     flex: 1,
