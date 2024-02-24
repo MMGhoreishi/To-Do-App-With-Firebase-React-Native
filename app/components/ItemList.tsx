@@ -26,7 +26,7 @@ const ItemList = () => {
         </TouchableOpacity>
 
         <Pressable onPress={() => item.id && deleteItem(item.id)}>
-          <FontAwesomeIcon icon="nfc-trash" size={24} color={"red"} />
+          <FontAwesomeIcon icon="trash" size={24} color={"red"} />
         </Pressable>
       </View>
     );
