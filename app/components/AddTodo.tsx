@@ -3,9 +3,11 @@ import styles from "../styles";
 import { useSelector, useDispatch } from "react-redux";
 import { setTodoValue } from "../data/todoSlice";
 import { addTodo } from "../includes/helper";
+import IStore from "../models/IStore";
 
 const AddTodo = () => {
-  const { todoValue } = useSelector((state: any) => state.todos);
+  const { todoValue } = useSelector((state: IStore) => state.todos);
+
   const dispatch = useDispatch();
 
   const clearTodoTextInput = () => {

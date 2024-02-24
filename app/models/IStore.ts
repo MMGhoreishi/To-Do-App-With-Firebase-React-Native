@@ -1,6 +1,6 @@
 import ITodo from "./ITodo";
 
 export default interface IStore {
-  todos: ITodo[];
+  todos: { todos: ITodo[] };
   todoValue: string;
 }

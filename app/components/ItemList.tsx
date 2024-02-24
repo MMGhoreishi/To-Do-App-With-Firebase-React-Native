@@ -3,28 +3,30 @@ import { useSelector } from "react-redux";
 import styles from "../styles";
 import { deleteItem, toggleDone } from "../includes/helper";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { ITodo } from "../models";
+import IStore from "../models/IStore";
 
 const ItemList = () => {
-  const { todos } = useSelector((state: any) => state.todos);
+  const { todos } = useSelector((state: IStore) => state.todos);
 
-  const renderTodo = ({ item }: any) => {
+  const renderTodo = ({ item }: { item: ITodo }) => {
     return (
       <View style={styles.todoContainer}>
         <TouchableOpacity
-          onPress={() => toggleDone(item.id, item.done)}
+          onPress={() => toggleDone(String(item.id), item.done)}
           style={styles.todo}
         >
           {item.done && (
-            <FontAwesomeIcon icon="fa-circle" size={20} color={"green"} />
+            <FontAwesomeIcon icon="circle" size={20} color={"green"} />
           )}
           {!item.done && (
-            <FontAwesomeIcon icon="fa-circle" size={20} color={"black"} />
+            <FontAwesomeIcon icon="circle" size={20} color={"black"} />
           )}
           <View>{item.title}</View>
         </TouchableOpacity>
 
-        <Pressable onPress={() => deleteItem(item.id)}>
-          <FontAwesomeIcon icon="fa-trash" size={24} color={"red"} />
+        <Pressable onPress={() => item.id && deleteItem(item.id)}>
+          <FontAwesomeIcon icon="nfc-trash" size={24} color={"red"} />
         </Pressable>
       </View>
     );
@@ -35,7 +37,7 @@ const ItemList = () => {
       <FlatList
         data={todos}
         renderItem={renderTodo}
-        keyExtractor={(todo) => todo.id}
+        keyExtractor={(todo) => (todo.id ? todo.id : "")}
       />
     </View>
   );
