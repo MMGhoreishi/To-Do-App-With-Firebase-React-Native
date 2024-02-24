@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import ITodo from "./models/ITodo";
-import { IPayloadTodoList, IPayloadTodoInputValue } from "./models";
+import ITodo from "../models/ITodo";
+import { IPayloadTodoList, IPayloadTodoInputValue } from "../models";
 
 let todoValue: string = "";
 const todos: ITodo[] = [];

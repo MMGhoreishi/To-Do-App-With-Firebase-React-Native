@@ -7,7 +7,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faCircle } from "@fortawesome/free-solid-svg-icons/faCircle";
 import { Provider } from "react-redux";
-import store from "./app/store";
+import store from "./app/data/store";
 
 library.add(fab, faTrash, faCircle);
 

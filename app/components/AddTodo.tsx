@@ -1,7 +1,7 @@
 import { Button, TextInput, View } from "react-native";
 import styles from "../styles";
 import { useSelector, useDispatch } from "react-redux";
-import { setTodoValue } from "../todoSlice";
+import { setTodoValue } from "../data/todoSlice";
 import { addTodo } from "../includes/helper";
 
 const AddTodo = () => {

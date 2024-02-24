@@ -1,14 +1,15 @@
-import { Text } from "react-native";
+import { View } from "react-native";
 import styles from "../styles";
 import { useSelector, useDispatch } from "react-redux";
-import { setTodoList } from "../todoSlice";
+import { setTodoList } from "../data/todoSlice";
 import { ITodo } from "../models";
 import { todosCollection } from "../includes/firebase";
 import { useEffect } from "react";
 import { ItemList } from "../components";
+import IStore from "../models/IStore";
 
 const TodosList = () => {
-  const { todos } = useSelector((state: any) => state.todos);
+  const { todos } = useSelector((state: IStore) => state.todos);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const TodosList = () => {
       {todos.length > 0 ? (
         <ItemList />
       ) : (
-        <Text style={styles.emptyList}>There are not todos</Text>
+        <View style={styles.emptyList}>There are not todos</View>
       )}
     </>
   );

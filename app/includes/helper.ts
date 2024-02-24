@@ -1,7 +1,8 @@
 import { Alert } from "react-native";
 import { todosCollection } from "../includes/firebase";
+import { ITodo } from "../models";
 
-export const addTodo = async (todo: any, setTodo: any) => {
+export const addTodo = async (todo: ITodo, setTodo: Function) => {
   try {
     const docRef = await todosCollection.add({
       title: todo,
@@ -13,7 +14,10 @@ export const addTodo = async (todo: any, setTodo: any) => {
   }
 };
 
-export const deleteItem = async (id: any) => {
+export const deleteItem = async (id: string) => {
+  console.log("Id to Delete>>>");
+  console.log(id);
+
   await todosCollection.doc(id).delete();
 
   //   Alert.alert("Delete Item", "Are you sure to delete the item?", [
@@ -25,6 +29,6 @@ export const deleteItem = async (id: any) => {
   //   ]);
 };
 
-export const toggleDone = async (id: any, done: any) => {
+export const toggleDone = async (id: string, done: boolean) => {
   await todosCollection.doc(id).update({ done: !done });
 };
